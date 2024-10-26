@@ -6,6 +6,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy.dialects.postgresql import UUID
+from uuid import uuid4
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -14,7 +15,7 @@ class User(db.Model):
     """User model
     """
     __tablename__ = "users"
-    id = db.Column(UUID(as_uuid=True), primary_key=True)
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=str(uuid4))
     username = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
@@ -39,7 +40,7 @@ class Todo(db.Model):
     """Todo model
     """
     __tablename__ = "todos"
-    id = db.Column(UUID(as_uuid=True), primary_key=True)
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=str(uuid4))
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     completed = db.Column(db.Boolean, default=False)
