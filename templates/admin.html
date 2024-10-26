@@ -1,8 +1,151 @@
 {% include 'imports.html' %}
 <script>
-    const adminAccessToken = Cookies.get('admin_access_token');
-    const adminRefreshToken = Cookies.get('admin_refresh_token');
+    const adminAccessToken = cookie.get('admin_access_token');
+    const adminRefreshToken = cookie.get('admin_refresh_token');
     if (!adminAccessToken && !adminRefreshToken) {
         window.location.href = '/';
     }
+
+    async function fetchTodos() {
+        try {
+            const response = await fetch('/api/todos', {
+                headers: {
+                    'Authorization': `Bearer ${adminAccessToken}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const todos = await response.json();
+            populateTodosTable(todos);
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    }
+
+    async function fetchUsers() {
+        try {
+            const response = await fetch('/api/users', {
+                headers: {
+                    'Authorization': `Bearer ${adminAccessToken}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const users = await response.json();
+            populateUsersTable(users);
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    }
+
+    async function deleteUser(userId) {
+        try {
+            const response = await fetch(`/api/users/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${adminAccessToken}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            fetchUsers();
+        } catch (error) {
+            console.error('There was a problem with the delete operation:', error);
+        }
+    }
+
+    function populateTodosTable(todos) {
+        const tbody = document.querySelector('#todos-table tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+        todos.forEach(todo => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${todo.completed}</td>
+                <td>${todo.created_at}</td>
+                <td>${todo.id}</td>
+                <td>${todo.user_id}</td>
+                <td>${todo.updated_at}</td>
+                <td>${todo.title}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function populateUsersTable(users) {
+        const tbody = document.querySelector('#users-table tbody');
+        tbody.innerHTML = '';
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.is_admin}</td>
+                <td>${user.created_at}</td>
+                <td>${user.updated_at}</td>
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td><button onclick="deleteUser(${user.id})" style="background-color: #ffd60a;padding: 6px;border-radius: 6px;text-transform: none;color: #000;border: 2px solid #000;">Delete</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchTodos();
+        fetchUsers();
+    });
 </script>
+
+<body>
+    <div class="uk-text-bold uk-text-large uk-text-left uk-margin-large-left uk-margin-top">
+        <h1 style="font-family: Comfortaa, sans-serif;font-weight: 700;">Admin Dashboard</h1>
+    </div>
+    <div class="uk-margin-large-bottom" style="height: 1.5px;background-color: #000;"></div>
+    <br>
+    <div class="uk-container">
+        <div class="uk-grid-divider uk-child-width-expand@2" uk-grid>
+            <div>
+                <h3>Users</h3>
+                <table id="users-table" class="uk-table uk-table-divider"
+                    style="border: 2px solid black; font-size: 14px;">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>is_admin</th>
+                            <th>created_at</th>
+                            <th>updated_at</th>
+                            <th>username</th>
+                            <th>email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3>Todos</h3>
+                <table id="todos-table" class="uk-table uk-table-divider"
+                    style="border: 2px solid black; font-size: 14px;">
+                    <thead>
+                        <tr>
+                            <th>Completed</th>
+                            <th>Date Created</th>
+                            <th>Id</th>
+                            <th>User Id</th>
+                            <th>Updated</th>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>

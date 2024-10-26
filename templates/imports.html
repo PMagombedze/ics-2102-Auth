@@ -14,3 +14,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
+
+<script src="https://unpkg.com/cookiejs/dist/cookie.min.js"></script>
+
+<script>
+    function pushNotify(text, status) {
+        new Notify({
+            status: status,
+            text: text,
+            effect: 'fade',
+            speed: 300,
+            customClass: null,
+            customIcon: null,
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 'outline',
+            position: 'right top'
+        })
+    }
+</script>

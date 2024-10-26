@@ -2,7 +2,7 @@
 
 <body>
     <div class="uk-text-bold uk-text-large uk-text-center uk-margin-top">
-        <h1>Percy's</h1>
+        <h1 style="font-family: Comfortaa, sans-serif;font-weight: 700;">Percy's</h1>
     </div>
     <div class="uk-divide-icon" style="height: 1.5px;background-color: #000;"></div>
 
@@ -56,12 +56,12 @@
                 .then(data => {
                     if (data.message === "logged in successfully") {
                         if (data.is_admin === true) {
-                            Cookies.set('admin_access_token', data.access_token, { expiry: 0.2 })
-                            Cookies.set('admin_refresh_token', data.refresh_token, { expiry: 0.2 })
+                            cookie.set('admin_access_token', data.access_token, 0.2)
+                            cookie.set('admin_refresh_token', data.refresh_token, 0.2)
                             window.location.href = "/admin/dashboard";
                         } else {
-                            Cookies.set('user_access_token', data.access_token, { expiry: 0.2 })
-                            Cookies.set('user_refresh_token', data.refresh_token, { expiry: 0.2 })
+                            cookie.set('user_access_token', data.access_token, 0.2)
+                            cookie.set('user_refresh_token', data.refresh_token, 0.2)
                             window.location.href = "/dashboard";
                         }
                     } else {

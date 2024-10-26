@@ -1,8 +1,8 @@
 {% include 'imports.html' %}
 <script>
-    const adminAccessToken = Cookies.get('admin_access_token');
-    const adminRefreshToken = Cookies.get('admin_refresh_token');
-    if (!adminAccessToken && !adminRefreshToken) {
+    const userAccessToken = cookie.get('user_access_token');
+    const userRefreshToken = cookie.get('user_refresh_token');
+    if (!userAccessToken && !userRefreshToken) {
         window.location.href = '/';
     }
 </script>

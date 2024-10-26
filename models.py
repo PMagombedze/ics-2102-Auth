@@ -31,6 +31,17 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
+    
+    # to_dict
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'is_admin': self.is_admin,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
 
     def __repr__(self):
         return f"<User {self.username}>"
