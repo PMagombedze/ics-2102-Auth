@@ -6,11 +6,8 @@ import re
 app = Flask(__name__)
 app.config.from_object(Config)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
-@app.route('/auth/login')
+@app.route('/')
 def login():
     return render_template('login.html')
 
@@ -40,9 +37,13 @@ jwt = JWTManager(app)
 def emailcheck(email):
     return re.match(r"[^@]+@[^@]+\.[^@]+", email)
 
-# password checker. very secure
+# password checker
 def passwordChecker(password):
     return re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", password)
+
+# username validater
+def usernamecheck(username):
+    return len(username) > 6 and len(username) < 14
 
 @app.route('/api/login', methods=['POST'])
 def apilogin():
@@ -56,7 +57,7 @@ def apilogin():
         identity = email if email else username
         access_token = create_access_token(identity=identity)
         refresh_token = create_refresh_token(identity=identity)
-        return jsonify({'access_token': access_token, 'refresh_token': refresh_token}), 200
+        return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'is_admin': user.is_admin, "message": "logged in successfully"}), 200
     return jsonify({'message': 'Invalid credentials'}), 404
 
 @app.route('/api/register', methods=['POST'])
@@ -65,7 +66,6 @@ def apiregister():
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
-    is_admin = data.get('is_admin', False)
 
     # check if user already exists
     existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
@@ -73,6 +73,8 @@ def apiregister():
         return jsonify({'message':'user already exists'}), 409
     if email and not emailcheck(email):
         return jsonify({'message': 'Invalid email format'}), 400
+    if not usernamecheck(username):
+        return jsonify({'message': 'Username too short or long'}), 400
     if not username and not email:
         return jsonify({'message': 'Username or email required'}), 400
     if not passwordChecker(password):
@@ -169,4 +171,4 @@ def todo_detail(id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run()
+    app.run(debug=True)

@@ -1,0 +1,8 @@
+{% include 'imports.html' %}
+<script>
+    const adminAccessToken = Cookies.get('admin_access_token');
+    const adminRefreshToken = Cookies.get('admin_refresh_token');
+    if (!adminAccessToken && !adminRefreshToken) {
+        window.location.href = '/';
+    }
+</script>

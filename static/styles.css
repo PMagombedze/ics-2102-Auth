@@ -1,0 +1,47 @@
+body {
+  font-family: "Comfortaa", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+#authForm {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 5px;
+  border: 2px solid #000000;
+}
+
+#authForm input {
+  font-size: 16px;
+  padding: 22px;
+  padding-left: 0;
+  border: none;
+  border-bottom: 2px solid #000;
+  text-align: left;
+}
+
+#authForm select {
+  font-size: 16px;
+  padding: 22px;
+  padding-left: 0;
+  border: none;
+  border-bottom: 2px solid #000;
+  text-align: left;
+}
+
+#authBtn {
+  background-color: #ffd60a;
+  padding: 4px;
+  border-radius: 8px;
+  text-transform: none;
+  color: #000;
+  border: 2px solid #000;
+}
+#signup:hover {
+    text-decoration: none;
+}
+
+#loginPage:hover {
+    text-decoration: none;
+}
