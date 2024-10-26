@@ -5,8 +5,8 @@
 # users model
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from sqlalchemy.dialects.postgresql import UUID
-from uuid import uuid4
+import random
+import string
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -15,11 +15,11 @@ class User(db.Model):
     """User model
     """
     __tablename__ = "users"
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=str(uuid4))
-    username = db.Column(db.String(255), nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(255), nullable=True, default=''.join(random.choices(string.ascii_letters + string.digits, k=8)))
+    password = db.Column(db.String(255), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
-    email = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False, default=f"user{random.randint(1, 1000)}@percy.com")
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
     todos = db.relationship('Todo', backref='user', lazy=True)
@@ -40,9 +40,8 @@ class Todo(db.Model):
     """Todo model
     """
     __tablename__ = "todos"
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=str(uuid4))
-    title = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=True)
     completed = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
@@ -52,7 +51,6 @@ class Todo(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'description': self.description,
             'completed': self.completed,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
