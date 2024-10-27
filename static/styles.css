@@ -12,6 +12,13 @@ body {
   border: 2px solid #000000;
 }
 
+#updateForm {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 0;
+  border: 2px solid #000000;
+}
+
 #authForm input {
   font-size: 16px;
   padding: 22px;
@@ -39,9 +46,27 @@ body {
   border: 2px solid #000;
 }
 #signup:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 #loginPage:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
+
+#updateForm input {
+    font-size: 16px;
+    padding: 22px;
+    padding-left: 0;
+    border: none;
+    border-bottom: 2px solid #000;
+    text-align: left;
+  }
+  
+  #updateForm select {
+    font-size: 16px;
+    padding: 22px;
+    padding-left: 0;
+    border: none;
+    border-bottom: 2px solid #000;
+    text-align: left;
+  }

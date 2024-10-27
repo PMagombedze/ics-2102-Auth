@@ -57,7 +57,7 @@ def apilogin():
         identity = email if email else username
         access_token = create_access_token(identity=identity)
         refresh_token = create_refresh_token(identity=identity)
-        return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'is_admin': user.is_admin, "message": "logged in successfully"}), 200
+        return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'is_admin': user.is_admin, "message": "logged in successfully", "id": user.id}), 200
     return jsonify({'message': 'Invalid credentials'}), 404
 
 @app.route('/api/register', methods=['POST'])

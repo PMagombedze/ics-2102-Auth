@@ -60,6 +60,7 @@
                         } else {
                             cookie.set('user_access_token', data.access_token, 0.0208)
                             cookie.set('user_refresh_token', data.refresh_token, 0.0208)
+                            cookie.set('user_id', data.id, 0.0208)
                             window.location.href = "/dashboard";
                         }
                     } else {
