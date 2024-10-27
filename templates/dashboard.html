@@ -97,12 +97,118 @@
                             <th>User Id</th>
                             <th>Updated</th>
                             <th>Title</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Data will be populated here -->
                     </tbody>
                 </table>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', async () => {
+                        const userAccessToken = cookie.get('user_access_token');
+                        const userId = cookie.get('user_id');
+                        if (!userAccessToken || !userId) {
+                            window.location.href = '/';
+                            return;
+                        }
+
+                        const url = `/api/todos/user/${userId}`;
+
+                        try {
+                            const response = await fetch(url, {
+                                method: 'GET',
+                                headers: {
+                                    'Authorization': `Bearer ${userAccessToken}`
+                                }
+                            });
+
+                            if (response.ok) {
+                                const todos = await response.json();
+                                const tbody = document.querySelector('#todos-table tbody');
+                                todos.forEach(todo => {
+                                    const row = document.createElement('tr');
+
+                                    row.innerHTML = `
+                                        <td><input id="is_completed" type="checkbox" ${todo.completed ? 'checked' : ''} disabled style="width: 15px; height: 15px; accent-color: #ffd60a;"></td>
+                                        <td>${new Date(todo.created_at).toLocaleString()}</td>
+                                        <td>${todo.id}</td>
+                                        <td>${todo.user_id}</td>
+                                        <td>${new Date(todo.updated_at).toLocaleString()}</td>
+                                        <td><input id="update_todo" type="text" style="border:none; background-color:#fff;border-bottom:2px solid #000;font-family: Comfortaa, sans-serif;" value="${todo.title}" onchange="updateTodoTitle(${todo.id}, this.value)"></td>
+                                        <td><button onclick="deleteTodo(${todo.id})" class="uk-text-bold" style="font-family: Comfortaa, sans-serif;background-color: #ffd60a;padding: 6px;border-radius: 0;text-transform: none;color: #000;border: 2px solid #000;">Delete</button></td>
+                                        <td><button onclick="updateTodo(${todo.id})" class="uk-text-bold" style="font-family: Comfortaa, sans-serif;background-color: #ffd60a;padding: 6px;border-radius: 0;text-transform: none;color: #000;border: 2px solid #000;">Update</button></td>
+                                    `;
+
+                                    tbody.appendChild(row);
+                                });
+                            } else {
+                                alert('Failed to fetch todos');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while fetching todos');
+                        }
+                    });
+
+                    async function deleteTodo(todoId) {
+                        const userAccessToken = cookie.get('user_access_token');
+                        const url = `/api/todos/${todoId}`;
+
+                        try {
+                            const response = await fetch(url, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${userAccessToken}`
+                                }
+                            });
+
+                            if (response.ok) {
+                                alert('Todo deleted successfully');
+                                location.reload();
+                            } else {
+                                alert('Failed to delete todo');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the todo');
+                        }
+                    }
+
+                    async function updateTodo(todoId) {
+                        const userAccessToken = cookie.get('user_access_token');
+                        const url = `/api/todos/${todoId}`;
+                        const todoTitle = document.getElementById('update_todo').value;
+                        const todoCompleted = document.getElementById('is_completed').checked;
+                        const todo = {
+                            title: todoTitle,
+                            completed: todoCompleted
+                        };
+                        const body = JSON.stringify(todo);
+                        const headers = {
+                            'Authorization': `Bearer ${userAccessToken}`,
+                            'Content-Type': 'application/json'
+                        };
+                        const options = {
+                            method: 'PUT',
+                            headers: headers,
+                            body: body
+                        };
+                        try {
+                            const response = await fetch(url, options);
+                            if (response.ok) {
+                                alert('Todo updated successfully');
+                                location.reload();
+                            } else {
+                                alert('Failed to update todo');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while updating the todo');
+                        }
+                    }
+                </script>
             </div>
         </div>
     </div>

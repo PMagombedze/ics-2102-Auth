@@ -152,9 +152,6 @@ def todo_detail(id):
     if not todo:
         return jsonify({'message': 'Todo not found'}), 404
 
-    if request.method == 'GET':
-        return jsonify(todo.to_dict()), 200
-
     if request.method == 'DELETE':
         db.session.delete(todo)
         db.session.commit()
@@ -166,6 +163,17 @@ def todo_detail(id):
         todo.completed = data.get('completed', todo.completed)
         db.session.commit()
         return jsonify({'message': 'Todo updated'}), 200
+
+@app.route('/api/todos/user/<int:user_id>', methods=['GET'])
+@jwt_required()
+def user_todos(user_id):
+    current_user = get_jwt_identity()
+    user = User.query.filter((User.email == current_user) | (User.username == current_user)).first()
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    if request.method == 'GET':
+        todos = Todo.query.filter_by(user_id=user_id).all()
+        return jsonify([todo.to_dict() for todo in todos]), 200
 
 
 if __name__ == '__main__':
