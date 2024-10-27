@@ -6,3 +6,25 @@
         window.location.href = '/';
     }
 </script>
+
+<body>
+    <div class="uk-text-bold uk-text-large uk-margin-large-left uk-margin-large-right uk-margin-top">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1 class="uk-text-left" style="font-family: Comfortaa, sans-serif;font-weight: 700;">User Dashboard</h1>
+            <button uk-tooltip="logout" class="uk-text-right" onclick="logoutUser()"
+                style="font-family: Comfortaa, sans-serif;background-color: #ffd60a;padding: 6px;border-radius: 0;text-transform: none;color: #000;border: 2px solid #000;">
+                <span uk-icon="user"></span>
+            </button>
+        </div>
+    </div>
+    <script>
+        function logoutUser() {
+            // Clear tokens and redirect to login page
+            cookie.remove('user_access_token');
+            cookie.remove('user_refresh_token');
+            window.location.href = '/';
+        }
+    </script>
+    <div class="uk-margin-large-bottom" style="height: 1.5px;background-color: #000;"></div>
+
+</body>

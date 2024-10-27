@@ -59,7 +59,7 @@
 
     function populateTodosTable(todos) {
         const tbody = document.querySelector('#todos-table tbody');
-        tbody.innerHTML = ''; // Clear existing rows
+        tbody.innerHTML = '';
         todos.forEach(todo => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -86,7 +86,7 @@
                 <td>${user.updated_at}</td>
                 <td>${user.username}</td>
                 <td>${user.email}</td>
-                <td><button onclick="deleteUser(${user.id})" style="background-color: #ffd60a;padding: 6px;border-radius: 6px;text-transform: none;color: #000;border: 2px solid #000;">Delete</button></td>
+                <td><button class="uk-text-bold" onclick="deleteUser(${user.id})" style="font-family: Comfortaa, sans-serif;background-color: #ffd60a;padding: 6px;border-radius: 0;text-transform: none;color: #000;border: 2px solid #000;">Delete</button></td>
             `;
             tbody.appendChild(row);
         });
@@ -99,15 +99,29 @@
 </script>
 
 <body>
-    <div class="uk-text-bold uk-text-large uk-text-left uk-margin-large-left uk-margin-top">
-        <h1 style="font-family: Comfortaa, sans-serif;font-weight: 700;">Admin Dashboard</h1>
+    <div class="uk-text-bold uk-text-large uk-margin-large-left uk-margin-large-right uk-margin-top">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1 class="uk-text-left" style="font-family: Comfortaa, sans-serif;font-weight: 700;">Admin Dashboard</h1>
+            <button uk-tooltip="logout" class="uk-text-right" onclick="logout()"
+                style="font-family: Comfortaa, sans-serif;background-color: #ffd60a;padding: 6px;border-radius: 0;text-transform: none;color: #000;border: 2px solid #000;">
+                <span uk-icon="user"></span>
+            </button>
+        </div>
     </div>
+    <script>
+        function logout() {
+            // Clear tokens and redirect to login page
+            cookie.remove('admin_access_token');
+            cookie.remove('admin_refresh_token');
+            window.location.href = '/';
+        }
+    </script>
     <div class="uk-margin-large-bottom" style="height: 1.5px;background-color: #000;"></div>
     <br>
     <div class="uk-container">
         <div class="uk-grid-divider uk-child-width-expand@2" uk-grid>
             <div>
-                <h3>Users</h3>
+                <h3 style="font-family: Comfortaa, sans-serif;font-weight: 700;">Users</h3>
                 <table id="users-table" class="uk-table uk-table-divider"
                     style="border: 2px solid black; font-size: 14px;">
                     <thead>
@@ -127,9 +141,8 @@
                 </table>
             </div>
             <div>
-                <h3>Todos</h3>
-                <table id="todos-table" class="uk-table uk-table-divider"
-                    style="border: 2px solid black; font-size: 14px;">
+                <h3 style="font-family: Comfortaa, sans-serif;font-weight: 700;">Todos</h3>
+                <table id="todos-table" class="uk-table uk-table-divider" style="border: 2px solid black;">
                     <thead>
                         <tr>
                             <th>Completed</th>
