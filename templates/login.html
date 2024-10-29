@@ -53,25 +53,26 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.message === "logged in successfully") {
-                        if (data.is_admin === true) {
-                            cookie.set('admin_access_token', data.access_token, 0.0208)
-                            cookie.set('admin_refresh_token', data.refresh_token, 0.0208)
-                            window.location.href = "/admin/dashboard";
-                        } else {
-                            cookie.set('user_access_token', data.access_token, 0.0208)
-                            cookie.set('user_refresh_token', data.refresh_token, 0.0208)
-                            cookie.set('user_id', data.id, 0.0208)
-                            window.location.href = "/dashboard";
-                        }
+                        pushNotify('Logged in successfully', 'success');
+                        setTimeout(() => {
+                            if (data.is_admin === true) {
+                                cookie.set('admin_access_token', data.access_token, 0.0208)
+                                cookie.set('admin_refresh_token', data.refresh_token, 0.0208)
+                                window.location.href = "/admin/dashboard";
+                            } else {
+                                cookie.set('user_access_token', data.access_token, 0.0208)
+                                cookie.set('user_refresh_token', data.refresh_token, 0.0208)
+                                cookie.set('user_id', data.id, 0.0208)
+                                window.location.href = "/dashboard";
+                            }
+                        }, 3000);
                     } else {
-                        alert("Login failed: " + data.message);
+                        pushNotify(data.message,'error')
                     }
                 })
                 .catch(error => {
-                    console.error("Error:", error);
-                    alert("An error occurred during login");
+                    pushNotify('An error occurred, try again','error')
                 });
         });
-
     </script>
 </body>

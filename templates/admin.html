@@ -19,7 +19,7 @@
             const todos = await response.json();
             populateTodosTable(todos);
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            pushNotify('An error occurred','error')
         }
     }
 
@@ -36,7 +36,7 @@
             const users = await response.json();
             populateUsersTable(users);
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            pushNotify('An error occurred','error')
         }
     }
 
@@ -53,7 +53,7 @@
             }
             fetchUsers();
         } catch (error) {
-            console.error('There was a problem with the delete operation:', error);
+            pushNotify('An error occurred','error')
         }
     }
 
@@ -114,6 +114,7 @@
             cookie.remove('admin_access_token');
             cookie.remove('admin_refresh_token');
             window.location.href = '/';
+            location.reload();
         }
     </script>
     <div class="uk-margin-large-bottom" style="height: 1.5px;background-color: #000;"></div>

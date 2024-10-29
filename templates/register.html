@@ -29,15 +29,12 @@
         // post to /api/register. if success, redirect to '/'
         document.getElementById('authForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
             const formData = new FormData(this);
             const data = {
                 username: document.getElementById('usr').value,
                 email: document.getElementById('em').value,
                 password: document.getElementById('pass').value
             };
-
-            console.log(data);
 
             fetch('/api/register', {
                 method: 'POST',
@@ -49,14 +46,17 @@
             .then(response => response.json())
             .then(result => {
                 if (result.message === "User created") {
-                    window.location.href = '/';
+                    pushNotify('User created successfully', 'success');
+                    // wait for 3 seconds before redirecting
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
                 } else {
-                    alert('Registration failed: ' + result.message);
+                    pushNotify(result.message,'error')
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                pushNotify("An error occurred, try again",'error')
             });
         });
     </script>

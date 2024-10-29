@@ -127,13 +127,12 @@
                             });
 
                             if (response.ok) {
-                                alert('Profile updated successfully');
+                                pushNotify('Profile updated successfully','success')
                             } else {
-                                alert('Failed to update profile');
+                                pushNotify('Failed to update profile','error')
                             }
                         } catch (error) {
-                            console.error('Error:', error);
-                            alert('An error occurred while updating the profile');
+                            pushNotify('An error occurred, try again','error')
                         }
                     }
                 </script>
@@ -192,11 +191,11 @@
                                     tbody.appendChild(row);
                                 });
                             } else {
-                                alert('Failed to fetch todos');
+                                pushNotify('Failed to fetch todos','error')
                             }
                         } catch (error) {
-                            console.error('Error:', error);
-                            alert('An error occurred while fetching todos');
+                            pushNotify('An error occurred, try again','error')
+
                         }
                     });
 
@@ -213,14 +212,15 @@
                             });
 
                             if (response.ok) {
-                                alert('Todo deleted successfully');
-                                location.reload();
+                                pushNotify('Todo deleted successfully','success')
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 3000);
                             } else {
-                                alert('Failed to delete todo');
+                                pushNotify('Failed to delete todo','error')
                             }
                         } catch (error) {
-                            console.error('Error:', error);
-                            alert('An error occurred while deleting the todo');
+                            pushNotify('An error occurred, try again','error')
                         }
                     }
 
@@ -246,14 +246,15 @@
                         try {
                             const response = await fetch(url, options);
                             if (response.ok) {
-                                alert('Todo updated successfully');
-                                location.reload();
+                                pushNotify('Todo updated successfully','success')
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 3000);
                             } else {
-                                alert('Failed to update todo');
+                                pushNotify('Failed to delete todo','error')
                             }
                         } catch (error) {
-                            console.error('Error:', error);
-                            alert('An error occurred while updating the todo');
+                            pushNotify('An error occurred, try again','error')
                         }
                     }
                 </script>

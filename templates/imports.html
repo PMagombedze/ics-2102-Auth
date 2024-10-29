@@ -15,27 +15,38 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
 
 <script src="https://unpkg.com/cookiejs/dist/cookie.min.js"></script>
 
 <script>
     function pushNotify(text, status) {
-        new Notify({
-            status: status,
+        if (status == "success") {
+            status = "#00b300";
+        } else if (status == "error") {
+            status = "#c1121f";
+        } else if (status == "warning") {
+            status = "#ffa500";
+        } else if (status == "info") {
+            status = "#0000ff";
+        } else {
+            status = "#000000";
+        }
+        Toastify({
             text: text,
-            effect: 'fade',
-            speed: 300,
-            customClass: null,
-            customIcon: null,
-            showIcon: true,
-            showCloseButton: true,
-            autoclose: true,
-            autotimeout: 3000,
-            gap: 20,
-            distance: 20,
-            type: 'outline',
-            position: 'right top'
-        })
+            duration: 3000,
+            destination: "https://github.com/apvarun/toastify-js",
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "left",
+            stopOnFocus: true,
+            style: {
+                background: status,
+            },
+            onClick: function () { }
+        }).showToast();
     }
 </script>
