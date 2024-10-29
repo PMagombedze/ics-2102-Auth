@@ -1,2 +1,22 @@
-__pycache__
+# Ignore environment variables
 .env
+
+# Ignore other files and directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+instance/
+.webassets-cache
+*.log
+*.pot
+*.mo
+*.swp
+*~
+*.sublime-project
+*.sublime-workspace
+.idea/
+.vscode/
+*.iml
