@@ -17,11 +17,11 @@ Pydantic
 
 ## How to run the project
 
-
+```
 $ git clone https://github.com/PMagombedze/ics-2102-Auth
 $ cd ics-2102-Auth
 $ python3 -m pip install -r requirements.txt
 $ python3 app.py
-
+```
 
 The project will be served at __localhost:5000__, visit this address and yeah that's it!
